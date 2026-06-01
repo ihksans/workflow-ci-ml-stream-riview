@@ -62,9 +62,10 @@ def main():
     X_test_vec = vectorizer.transform(X_test)
     
     # 5. Konfigurasi MLflow
-    # Set nama eksperimen
-    experiment_name = "Steam_Sentiment_Retrain_Workflow_CI"
-    mlflow.set_experiment(experiment_name)
+    # Set nama eksperimen (hanya jika dijalankan langsung, bukan lewat mlflow run)
+    if "MLFLOW_RUN_ID" not in os.environ:
+        experiment_name = "Steam_Sentiment_Retrain_Workflow_CI"
+        mlflow.set_experiment(experiment_name)
     
     # Aktifkan Autolog Scikit-Learn
     print("Mengaktifkan MLflow Autolog...")
