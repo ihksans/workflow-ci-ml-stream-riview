@@ -1,0 +1,14 @@
+name: Steam_Review_Sentiment_Retrain
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      C:
+        type: float
+        default: 1.0
+      max_iter:
+        type: int
+        default: 1000
+    command: "python modelling.py --C {C} --max_iter {max_iter}"
