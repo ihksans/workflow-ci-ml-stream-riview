@@ -33,7 +33,7 @@ jobs:
     - name: Run MLflow Project (Retrain Model)
       run: |
         # Menjalankan MLflow Project menggunakan entry point main dengan parameter kustom
-        mlflow run MLProject --no-conda -P C=10.0 -P max_iter=1000
+        mlflow run MLProject --env-manager local -P C=10.0 -P max_iter=1000
 
     - name: Upload Trained Model Artifact to GitHub
       uses: actions/upload-artifact@v4
