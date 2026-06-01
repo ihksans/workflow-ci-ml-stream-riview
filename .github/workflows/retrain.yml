@@ -54,7 +54,7 @@ jobs:
     - name: Build Docker Image using MLflow build-docker
       run: |
         # Membangun Docker Image mandiri dari model hasil latih lokal
-        mlflow models build-docker -m MLProject/model_output/ -n ihksans/workflow-ci-ml-stream-review:latest --enable-mlserver
+        mlflow models build-docker -m MLProject/model_output/ -n ihksans/workflow-ci-ml-stream-review:latest --enable-mlserver --env-manager local
 
     - name: Push Docker Image to Docker Hub
       run: |
