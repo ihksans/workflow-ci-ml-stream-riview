@@ -6,7 +6,8 @@ on:
       - main
       - master
     paths:
-      - 'Workflow-CI/**'
+      - 'MLProject/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
@@ -27,18 +28,18 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install mlflow==3.12.0 scikit-learn pandas numpy matplotlib seaborn dagshub nltk
+        pip install mlflow==2.19.0 scikit-learn pandas numpy matplotlib seaborn dagshub nltk
 
     - name: Run MLflow Project (Retrain Model)
       run: |
         # Menjalankan MLflow Project menggunakan entry point main dengan parameter kustom
-        mlflow run Workflow-CI/MLProject --no-conda -P C=10.0 -P max_iter=1000
+        mlflow run MLProject --no-conda -P C=10.0 -P max_iter=1000
 
     - name: Upload Trained Model Artifact to GitHub
       uses: actions/upload-artifact@v4
       with:
         name: trained-sentiment-model
-        path: Workflow-CI/MLProject/model_output/
+        path: MLProject/model_output/
         retention-days: 7
 
     - name: Set up Docker Buildx
@@ -53,9 +54,9 @@ jobs:
     - name: Build Docker Image using MLflow build-docker
       run: |
         # Membangun Docker Image mandiri dari model hasil latih lokal
-        mlflow models build-docker -m Workflow-CI/MLProject/model_output/ -n ihksandev/workflow-ci-ml-stream-review:latest --enable-mlserver
+        mlflow models build-docker -m MLProject/model_output/ -n ihksans/workflow-ci-ml-stream-review:latest --enable-mlserver
 
     - name: Push Docker Image to Docker Hub
       run: |
         # Mengunggah Docker Image ke Docker Hub
-        docker push ihksandev/workflow-ci-ml-stream-review:latest
+        docker push ihksans/workflow-ci-ml-stream-review:latest
